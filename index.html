@@ -67,12 +67,16 @@
 
                 return array;
             }
+
+            // update content from array 
             function updateContent() {
                 for(let i=0;i<domList.length;i++) {
                     const element = document.getElementById(randomizedDomList[i])
                     element.innerHTML = randomizedList[i]
                 }
             } 
+
+            // run timer for every 2000 ms
             function timer() {
                 const element = document.getElementById(randomizedDomList[currentDomIndex])
                 element.innerHTML = randomizedList[currentIndex]
