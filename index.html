@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>tt-javascript-donut</title>
+        <link rel="stylesheet" href="main.css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">  
+    </head>
+    <body>
+        <div class="container">
+            <h1>Javascript Donut</h1>
+            <pre id="donut"></pre>
+            <div class="card-container">
+                <div class="card">
+                    #1-content: <span id="content1"></span>
+                </div>
+                <div class="card">
+                    #2-content: <span id="content2"></span>
+                </div>
+                <div class="card">
+                    #3-content: <span id="content3"></span>
+                </div>
+                <div class="card">
+                    #4-content: <span id="content4"></span>
+                </div>
+                <div class="card">
+                    #5-content: <span id="content5"></span>
+                </div>
+                <div class="card">
+                    #6-content: <span id="content6"></span>
+                </div>
+                <div class="card">
+                    #7-content: <span id="content7"></span>
+                </div>
+            </div>
+        </div>
+        <script>
+
+            // decide which one to update next
+            var domList = ['content1','content2','content3','content4','content5','content6','content7']
+            var randomizedDomList = shuffle(domList)
+            var currentDomIndex = 0
+
+            // list of content, decide which content to be displayed 
+            var originalList = ['1richard', '2crystal', '3ivy', '4alan', '5sunting', '6daniel', '7ganjian', '8effy', '9lucy', '10sheilla',
+                        '11roy', '12jenny', '13yinghung', '14vincent', '15james', '16olivia', '17jaychow', '18your mom', '19john doe', '20mars',]
+            var randomizedList = shuffle(originalList)
+            var currentIndex = domList.length
+
+            
+
+            function shuffle(array) {
+                // taken from: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+                let currentIndex = array.length,  randomIndex;
+
+                // While there remain elements to shuffle...
+                while (currentIndex != 0) {
+
+                    // Pick a remaining element...
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex--;
+
+                    // And swap it with the current element.
+                    [array[currentIndex], array[randomIndex]] = [
+                    array[randomIndex], array[currentIndex]];
+                }
+
+                return array;
+            }
+            function updateContent() {
+                for(let i=0;i<domList.length;i++) {
+                    const element = document.getElementById(randomizedDomList[i])
+                    element.innerHTML = randomizedList[i]
+                }
+            } 
+            function timer() {
+                console.log('randomizedDomList[currentDomIndex]', randomizedDomList[currentDomIndex])
+                const element = document.getElementById(randomizedDomList[currentDomIndex])
+                element.innerHTML = randomizedList[currentIndex]
+                currentDomIndex++
+                currentIndex++
+                console.log('update currentDom', currentDomIndex, 'currentIndex', currentIndex, element.innerHTML)
+                if (currentDomIndex + 1 >= domList.length) {
+                    currentDomIndex = 0
+                } else {
+                    currentDomIndex++
+                }
+                if(currentIndex + 1 >= randomizedList.length) {
+                    currentIndex = 0
+                } else {
+                    currentIndex++
+                }
+                    
+                
+                setTimeout(timer, 2000)
+            }
+            function main() {
+                updateContent();
+                setTimeout(timer, 2000);
+                requestAnimationFrame(animate);
+            }
+            var A = 0, B = 0
+            let i, j, k
+            let z
+            let b
+            let preElement = document.getElementById('donut')
+            function animate(timestamp) {
+                let { sin, cos } = Math
+                b = Array(1760).fill(' ')
+                z = Array(1760).fill(0)
+                for (j = 0; j < 6.28; j += 0.07) {
+                    for(i = 0; i < 6.28; i += 0.02) {
+                        let c = sin(i)
+                        let d = cos(j)
+                        let e = sin(A)
+                        let f = sin(j)
+                        let g = cos(A)
+                        let h = d + 2
+                        let D = 1 / (c * h * e + f * g + 5)
+                        let l = cos(i)
+                        let m = cos(B)
+                        let n = sin(B)
+                        let t = c * h * g - f * e
+                        let x = parseInt(40 + 30 * D * (l * h * m - t * n))
+                        let y = parseInt(12 + 15 * D * (l * h * n + t * m))
+                        let o = parseInt(x + 80 * y)
+                        let N = parseInt(8 * ((f * e - c * d * g) * m - c * d * e - f * g - l * d * n))
+                        if (22 > y && y > 0 && x > 0 && 80 > x && D > z[o]) {
+                            z[o] = D
+                            b[o] = ".,-~:;=!*#$@"[N > 0 ? N : 0];
+                        }
+                    }
+                }
+                preElement.innerHTML = ''
+                let newImg = ''
+                for (k = 0; k < 1761; k++) {
+                    newImg += (k % 80 ? b[k] : '\n' )
+                    A += 0.00004
+                    B += 0.00002
+                }
+                preElement.innerHTML = newImg
+                requestAnimationFrame(animate);
+            }
+            window.onload = main
+        </script>
+    </body>
+</html>
