@@ -11,6 +11,7 @@ body {
     margin: 0 auto;
     padding: 0 10px;
     background-color: lemonchiffon;
+    padding-bottom: 20px;
 }
 
 h1, h2 {
@@ -21,12 +22,14 @@ pre {
     color: white;
     background-color: black;
     width: 100%;
+    margin-bottom: 10px;
 }
 
 .card-container {
     display: grid;
     grid-template-columns: repeat(2, calc(50% - 10px));
     column-gap: 10px;
+    display: none;
 }
 
 .card {

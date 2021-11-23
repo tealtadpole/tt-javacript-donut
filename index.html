@@ -10,104 +10,30 @@
         <div class="container">
             <h1>Javascript Donut</h1>
             <pre id="donut"></pre>
-            <div class="card-container">
-                <div class="card">
-                    #1-content: <span id="content1"></span>
-                </div>
-                <div class="card">
-                    #2-content: <span id="content2"></span>
-                </div>
-                <div class="card">
-                    #3-content: <span id="content3"></span>
-                </div>
-                <div class="card">
-                    #4-content: <span id="content4"></span>
-                </div>
-                <div class="card">
-                    #5-content: <span id="content5"></span>
-                </div>
-                <div class="card">
-                    #6-content: <span id="content6"></span>
-                </div>
-                <div class="card">
-                    #7-content: <span id="content7"></span>
-                </div>
-            </div>
-        </div>
         <script>
-
-            // decide which one to update next
-            var domList = ['content1','content2','content3','content4','content5','content6','content7']
-            var randomizedDomList = shuffle(domList)
-            var currentDomIndex = 0
-
-            // list of content, decide which content to be displayed 
-            var originalList = ['1richard', '2crystal', '3ivy', '4alan', '5sunting', '6daniel', '7ganjian', '8effy', '9lucy', '10sheilla',
-                        '11roy', '12jenny', '13yinghung', '14vincent', '15james', '16olivia', '17jaychow', '18your mom', '19john doe', '20mars',]
-            var randomizedList = shuffle(originalList)
-            var currentIndex = domList.length
-
-            
-
-            function shuffle(array) {
-                // taken from: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-                let currentIndex = array.length,  randomIndex;
-
-                // While there remain elements to shuffle...
-                while (currentIndex != 0) {
-
-                    // Pick a remaining element...
-                    randomIndex = Math.floor(Math.random() * currentIndex);
-                    currentIndex--;
-
-                    // And swap it with the current element.
-                    [array[currentIndex], array[randomIndex]] = [
-                    array[randomIndex], array[currentIndex]];
-                }
-
-                return array;
-            }
-
-            // update content from array 
-            function updateContent() {
-                for(let i=0;i<domList.length;i++) {
-                    const element = document.getElementById(randomizedDomList[i])
-                    element.innerHTML = randomizedList[i]
-                }
-            } 
-
-            // run timer for every 2000 ms
-            function timer() {
-                const element = document.getElementById(randomizedDomList[currentDomIndex])
-                element.innerHTML = randomizedList[currentIndex]
-                currentDomIndex++
-                currentIndex++
-                console.log('update currentDom', currentDomIndex, 'currentIndex', currentIndex, element.innerHTML)
-                if (currentDomIndex + 1 >= domList.length) {
-                    currentDomIndex = 0
-                } else {
-                    currentDomIndex++
-                }
-                if(currentIndex + 1 >= randomizedList.length) {
-                    currentIndex = 0
-                } else {
-                    currentIndex++
-                }
-                    
-                
-                setTimeout(timer, 2000)
-            }
             function main() {
-                updateContent();
-                setTimeout(timer, 2000);
                 requestAnimationFrame(animate);
             }
             var A = 0, B = 0
+            var deltaTArray = []
+            var prevT = null
             let i, j, k
             let z
             let b
             let preElement = document.getElementById('donut')
+
+            // average function taken from: https://stackoverflow.com/questions/29544371/finding-the-average-of-an-array-using-js
+            const average = (array) => array.reduce((a, b) => a + b) / array.length;
             function animate(timestamp) {
+                if (prevT !== null) {
+                    deltaTArray.push(timestamp - prevT)
+                    if (deltaTArray.length > 10) {
+                        deltaTArray.shift()
+                    }
+                }
+                const avgDeltaT = deltaTArray.length > 0 ? average(deltaTArray) : 0
+                const averageFps = 1000 / avgDeltaT
+                prevT = timestamp 
                 let { sin, cos } = Math
                 b = Array(1760).fill(' ')
                 z = Array(1760).fill(0)
@@ -141,6 +67,7 @@
                     A += 0.00004
                     B += 0.00002
                 }
+                newImg += `\n -- fps : ${averageFps} --\n`
                 preElement.innerHTML = newImg
                 requestAnimationFrame(animate);
             }
